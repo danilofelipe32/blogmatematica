@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Job } from '../types';
 import JobCard from './JobCard';
