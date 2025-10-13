@@ -11,6 +11,7 @@ interface PostViewProps {
 declare global {
     interface Window {
         renderMathInElement?: (element: HTMLElement, options?: any) => void;
+        katex?: any;
     }
 }
 
@@ -19,7 +20,7 @@ const PostView: React.FC<PostViewProps> = ({ post, onBack }) => {
     const contentRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        if (contentRef.current && window.renderMathInElement) {
+        if (contentRef.current && window.renderMathInElement && window.katex) {
             window.renderMathInElement(contentRef.current, {
                 delimiters: [
                     { left: '$$', right: '$$', display: true },
