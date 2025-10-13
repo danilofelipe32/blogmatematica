@@ -310,12 +310,14 @@ const App: React.FC = () => {
                 isOpen={isDeleteConfirmModalOpen}
                 onClose={() => { setIsDeleteConfirmModalOpen(false); setIsAdminModalOpen(true); }}
                 onConfirm={handleDeleteConfirm}
+                itemName="esta publicação"
             />
             
             <DeleteConfirmModal 
                 isOpen={isDeleteJobConfirmModalOpen}
                 onClose={() => { setIsDeleteJobConfirmModalOpen(false); setJobToDeleteId(null); }}
                 onConfirm={handleDeleteJobConfirm}
+                itemName="este trabalho"
             />
 
         </div>
