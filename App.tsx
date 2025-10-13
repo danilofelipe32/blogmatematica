@@ -36,6 +36,8 @@ const App: React.FC = () => {
     const [postToDeleteId, setPostToDeleteId] = useState<number | null>(null);
     const [isAddEditJobModalOpen, setIsAddEditJobModalOpen] = useState(false);
     const [jobToEdit, setJobToEdit] = useState<Job | null>(null);
+    const [isDeleteJobConfirmModalOpen, setIsDeleteJobConfirmModalOpen] = useState(false);
+    const [jobToDeleteId, setJobToDeleteId] = useState<number | null>(null);
 
 
     const filteredPosts = useMemo(() => {
@@ -114,16 +116,17 @@ const App: React.FC = () => {
     };
     
     const handleSavePost = (postData: Omit<Post, 'id' | 'content'> & { id?: number; content?: string }) => {
-        if (postData.id) {
-            setPosts(currentPosts => currentPosts.map(p => p.id === postData.id ? { ...p, ...postData } : p));
-        } else {
+        setPosts(currentPosts => {
+            if (postData.id) {
+                return currentPosts.map(p => p.id === postData.id ? { ...p, ...postData } : p);
+            }
             const newPost: Post = {
                 id: Date.now(),
                 content: '<p>Este é um novo post. O conteúdo completo pode ser adicionado aqui usando HTML.</p>',
                 ...postData,
             };
-            setPosts(currentPosts => [newPost, ...currentPosts]);
-        }
+            return [newPost, ...currentPosts];
+        });
         setIsAddEditModalOpen(false);
         setPostToEdit(null);
     };
@@ -149,15 +152,16 @@ const App: React.FC = () => {
     };
     
     const handleSaveJob = (jobData: Omit<Job, 'id'> & { id?: number }) => {
-        if (jobData.id) {
-            setJobs(currentJobs => currentJobs.map(j => j.id === jobData.id ? { ...j, ...jobData } : j));
-        } else {
+        setJobs(currentJobs => {
+            if (jobData.id) {
+                return currentJobs.map(j => j.id === jobData.id ? { ...j, ...jobData } as Job : j);
+            }
             const newJob: Job = {
                 id: Date.now(),
                 ...jobData,
             };
-            setJobs(currentJobs => [newJob, ...currentJobs]);
-        }
+            return [newJob, ...currentJobs];
+        });
         setIsAddEditJobModalOpen(false);
         setJobToEdit(null);
     };
@@ -165,6 +169,20 @@ const App: React.FC = () => {
     const handleEditJobRequest = (job: Job) => {
         setJobToEdit(job);
         requestPassword('edit_job');
+    };
+    
+    const handleDeleteJobRequest = (id: number) => {
+        setJobToDeleteId(id);
+        setIsAddEditJobModalOpen(false);
+        setIsDeleteJobConfirmModalOpen(true);
+    };
+
+    const handleDeleteJobConfirm = () => {
+        if (jobToDeleteId) {
+            setJobs(currentJobs => currentJobs.filter(j => j.id !== jobToDeleteId));
+        }
+        setIsDeleteJobConfirmModalOpen(false);
+        setJobToDeleteId(null);
     };
 
     const selectedPost = useMemo(() => posts.find(p => p.id === selectedPostId), [posts, selectedPostId]);
@@ -274,6 +292,7 @@ const App: React.FC = () => {
                 onClose={() => { setIsAddEditJobModalOpen(false); setJobToEdit(null); }}
                 onSave={handleSaveJob}
                 jobToEdit={jobToEdit}
+                onDelete={handleDeleteJobRequest}
             />
 
             <AdminModal
@@ -291,6 +310,12 @@ const App: React.FC = () => {
                 isOpen={isDeleteConfirmModalOpen}
                 onClose={() => { setIsDeleteConfirmModalOpen(false); setIsAdminModalOpen(true); }}
                 onConfirm={handleDeleteConfirm}
+            />
+            
+            <DeleteConfirmModal 
+                isOpen={isDeleteJobConfirmModalOpen}
+                onClose={() => { setIsDeleteJobConfirmModalOpen(false); setJobToDeleteId(null); }}
+                onConfirm={handleDeleteJobConfirm}
             />
 
         </div>
