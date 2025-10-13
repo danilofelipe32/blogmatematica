@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { Post } from '../types';
 
@@ -89,7 +88,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, onSelect, index }) => {
                 <p className="text-white/90 text-sm mb-4 flex-grow">{post.excerpt}</p>
                 <div className="mt-auto pt-2 flex justify-between items-center w-full">
                     <span className="text-xs text-white/80">{post.date}</span>
-                    <a href="#" onClick={(e) => { e.preventDefault(); onSelect(post.id); }} className="font-semibold text-white bg-white/20 hover:bg-white/30 rounded-full px-4 py-2 text-xs transition-colors">Leia mais &rarr;</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); onSelect(post.id); }} className="font-semibold text-white bg-violet-500 hover:bg-violet-600 rounded-full px-4 py-2 text-sm shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">Leia mais &rarr;</a>
                 </div>
             </div>
         </article>
