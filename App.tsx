@@ -23,7 +23,7 @@ const App: React.FC = () => {
     const [currentJobPage, setCurrentJobPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const [activeCategory, setActiveCategory] = useState('Todos');
-    const [isFilterVisible, setIsFilterVisible] = useState(false);
+    const [isFilterVisible, setIsFilterVisible] = useState(true);
     const [activeTab, setActiveTab] = useState<'posts' | 'jobs'>('posts');
 
 
@@ -217,27 +217,55 @@ const App: React.FC = () => {
 
                         {activeTab === 'posts' && (
                              <div>
-                                <div className="mb-8 flex flex-col sm:flex-row gap-4">
-                                    <input
-                                        type="text"
-                                        placeholder="Pesquisar publicações..."
-                                        value={searchTerm}
-                                        onChange={handleSearchChange}
-                                        className="w-full sm:w-1/2 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                    />
-                                    <div className="relative w-full sm:w-auto">
-                                        <button onClick={() => setIsFilterVisible(!isFilterVisible)} className="w-full sm:w-auto px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm flex items-center justify-between">
-                                            <span>{activeCategory}</span>
-                                            <svg className={`w-5 h-5 ml-2 transition-transform ${isFilterVisible ? 'transform rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                                        </button>
-                                        {isFilterVisible && (
-                                            <div className="absolute z-10 top-full left-0 mt-2 w-full sm:w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
-                                                {CATEGORIES.map(category => (
-                                                    <a href="#" key={category} onClick={(e) => { e.preventDefault(); handleCategoryChange(category); setIsFilterVisible(false); }} className={`block px-4 py-2 text-sm ${activeCategory === category ? 'font-bold text-blue-600' : 'text-gray-700'} hover:bg-gray-100`}>{category}</a>
-                                                ))}
-                                            </div>
-                                        )}
+                                <div className="mb-8 max-w-3xl mx-auto">
+                                    {/* Search Bar */}
+                                    <div className="relative w-full mb-4">
+                                        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                                            <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                            </svg>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            placeholder="Pesquisar..."
+                                            value={searchTerm}
+                                            onChange={handleSearchChange}
+                                            className="w-full pl-12 pr-12 py-3 border border-gray-200 bg-white rounded-full shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow duration-200"
+                                            aria-label="Pesquisar publicações"
+                                        />
+                                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                            <button
+                                                onClick={() => setIsFilterVisible(!isFilterVisible)}
+                                                className="p-2 text-gray-500 rounded-full hover:bg-gray-100 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                                aria-label="Mostrar/esconder filtros de categoria"
+                                                aria-expanded={isFilterVisible}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M7 12h10m-7 6h4" />
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
+                                    
+                                    {/* Category Pills */}
+                                    {isFilterVisible && (
+                                        <div className="flex flex-wrap justify-center gap-x-3 gap-y-2">
+                                            {CATEGORIES.map(category => (
+                                                <button
+                                                    key={category}
+                                                    onClick={() => handleCategoryChange(category)}
+                                                    className={`
+                                                        px-5 py-2 text-sm font-medium rounded-full transition-all duration-200 ease-in-out
+                                                        ${activeCategory === category
+                                                            ? 'bg-blue-600 text-white shadow-md'
+                                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800'}
+                                                    `}
+                                                >
+                                                    {category}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                                     {paginatedPosts.length > 0 ? (
