@@ -5,9 +5,10 @@ import { Job } from '../types';
 interface JobCardProps {
     job: Job;
     index: number;
+    onEdit: (job: Job) => void;
 }
 
-const JobCard: React.FC<JobCardProps> = ({ job, index }) => {
+const JobCard: React.FC<JobCardProps> = ({ job, index, onEdit }) => {
     const cardRef = useRef<HTMLElement | null>(null);
     const [isVisible, setIsVisible] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -63,12 +64,21 @@ const JobCard: React.FC<JobCardProps> = ({ job, index }) => {
             ref={cardRef}
             style={{ '--card-index': index % 3 } as React.CSSProperties}
             className={`
-                bg-white rounded-xl shadow-lg hover:shadow-2xl 
+                relative bg-white rounded-xl shadow-lg hover:shadow-2xl 
                 transition-all duration-300 transform hover:-translate-y-1 flex flex-col overflow-hidden
                 ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-5 scale-95'}
                 delay-[calc(var(--card-index)_*_150ms)]
             `}
         >
+            <button
+                onClick={(e) => { e.stopPropagation(); onEdit(job); }}
+                aria-label={`Editar ${job.title}`}
+                className="absolute top-3 right-3 z-10 p-2 bg-white/70 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:text-gray-900 transition-all duration-200 shadow-md"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z" />
+                </svg>
+            </button>
             <div className="relative w-full h-64 overflow-hidden group">
                 <img 
                     src={images[currentIndex]} 
