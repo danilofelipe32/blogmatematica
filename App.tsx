@@ -115,14 +115,14 @@ const App: React.FC = () => {
     
     const handleSavePost = (postData: Omit<Post, 'id' | 'content'> & { id?: number; content?: string }) => {
         if (postData.id) {
-            setPosts(posts.map(p => p.id === postData.id ? { ...p, ...postData } : p));
+            setPosts(currentPosts => currentPosts.map(p => p.id === postData.id ? { ...p, ...postData } : p));
         } else {
             const newPost: Post = {
                 id: Date.now(),
                 content: '<p>Este é um novo post. O conteúdo completo pode ser adicionado aqui usando HTML.</p>',
                 ...postData,
             };
-            setPosts([newPost, ...posts]);
+            setPosts(currentPosts => [newPost, ...currentPosts]);
         }
         setIsAddEditModalOpen(false);
         setPostToEdit(null);
@@ -141,7 +141,7 @@ const App: React.FC = () => {
 
     const handleDeleteConfirm = () => {
         if (postToDeleteId) {
-            setPosts(posts.filter(p => p.id !== postToDeleteId));
+            setPosts(currentPosts => currentPosts.filter(p => p.id !== postToDeleteId));
         }
         setIsDeleteConfirmModalOpen(false);
         setPostToDeleteId(null);
@@ -150,13 +150,13 @@ const App: React.FC = () => {
     
     const handleSaveJob = (jobData: Omit<Job, 'id'> & { id?: number }) => {
         if (jobData.id) {
-            setJobs(jobs.map(j => j.id === jobData.id ? { ...j, ...jobData } : j));
+            setJobs(currentJobs => currentJobs.map(j => j.id === jobData.id ? { ...j, ...jobData } : j));
         } else {
             const newJob: Job = {
                 id: Date.now(),
                 ...jobData,
             };
-            setJobs([newJob, ...jobs]);
+            setJobs(currentJobs => [newJob, ...currentJobs]);
         }
         setIsAddEditJobModalOpen(false);
         setJobToEdit(null);
