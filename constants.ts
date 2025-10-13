@@ -1,9 +1,67 @@
-
-import { Post } from './types';
+import { Post, Job } from './types';
 
 export const POSTS_PER_PAGE = 6;
 export const CATEGORIES = ['Todos', 'Álgebra', 'Geometria', 'Cálculo', 'Fundamentos'];
 export const ADMIN_PASSWORD = '271177';
+
+export const INITIAL_JOBS: Job[] = [
+    {
+        id: 4,
+        title: "Tutor de Matemática IA 'Zen'",
+        problem: "Alunos precisam de ajuda imediata e personalizada para resolver dúvidas de matemática fora do horário de aula.",
+        date: "20 de Outubro, 2025",
+        image1: "https://i.imgur.com/UCZzUpe.png",
+        image2: "https://i.imgur.com/DL2PFOa.png",
+        image3: "https://i.imgur.com/1n5RAS7.png",
+        solutionDescription: "Um chatbot inteligente que utiliza IA para fornecer explicações passo a passo, dicas e exercícios práticos. O 'Zen' se adapta ao nível de conhecimento do aluno, oferecendo uma experiência de aprendizado calma e focada.",
+        solutionType: "Chatbot com Inteligência Artificial",
+        tools: "Google Gemini API, Python, React",
+        link: "https://zen-math-tutor.example.com",
+        components: "Heitor, Isadora, Joana"
+    },
+    {
+        id: 1,
+        title: "Visualizador de Sólidos Geométricos em 3D",
+        problem: "Dificuldade dos alunos em visualizar formas geométricas tridimensionais a partir de representações 2D no quadro ou em livros.",
+        date: "15 de Outubro, 2025",
+        image1: "https://i.imgur.com/3Z6uXyB.png",
+        image2: "https://i.imgur.com/eBv9b7M.png",
+        image3: "https://i.imgur.com/8a8f1nF.png",
+        solutionDescription: "Desenvolvemos uma aplicação web interativa onde os alunos podem rotacionar, ampliar e analisar diversos sólidos geométricos (cubos, esferas, pirâmides) em um ambiente 3D. A ferramenta também permite visualizar as 'planificações' dos sólidos.",
+        solutionType: "Aplicação Web Interativa",
+        tools: "Three.js, React, TypeScript",
+        link: "https://phet.colorado.edu/sims/html/build-a-molecule/latest/build-a-molecule_pt_BR.html",
+        components: "Ana, Bruno, Carla"
+    },
+    {
+        id: 2,
+        title: "Game de Tabuada com Desafios",
+        problem: "Falta de engajamento e dificuldade na memorização da tabuada por parte dos alunos do ensino fundamental.",
+        date: "12 de Outubro, 2025",
+        image1: "https://i.imgur.com/KzXqL7j.png",
+        image2: "https://i.imgur.com/d9jY4kP.png",
+        image3: "https://i.imgur.com/R3aO8tW.png",
+        solutionDescription: "Criamos um jogo digital com fases e desafios progressivos. Os alunos praticam a tabuada para derrotar monstros e ganhar recompensas, tornando o aprendizado uma experiência divertida e competitiva.",
+        solutionType: "Jogo Educacional (Gamificação)",
+        tools: "Godot Engine, GDScript",
+        link: "https://www.tabuadadivertida.com/",
+        components: "Daniel, Eduardo, Fernanda"
+    },
+    {
+        id: 3,
+        title: "Calculadora de Funções com Gráficos",
+        problem: "Abstração do conceito de funções e a relação entre a fórmula algébrica e sua representação gráfica.",
+        date: "08 de Outubro, 2025",
+        image1: "https://i.imgur.com/nL8s4gS.png",
+        image2: "https://i.imgur.com/cK3v7jI.png",
+        image3: "https://i.imgur.com/pY2tW1x.png",
+        solutionDescription: "Uma ferramenta online que permite aos usuários inserir diferentes tipos de funções (1º grau, 2º grau, exponencial) e visualizar instantaneamente o gráfico correspondente. É possível alterar os parâmetros da função e observar as transformações no gráfico em tempo real.",
+        solutionType: "Ferramenta de Visualização",
+        tools: "HTML, CSS, JavaScript, Chart.js",
+        link: "https://www.geogebra.org/graphing",
+        components: "Gabriela, Heitor, Isadora"
+    }
+];
 
 export const INITIAL_POSTS: Post[] = [
     {
