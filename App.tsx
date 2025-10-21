@@ -8,7 +8,6 @@ import PostCard from './components/PostCard';
 import JobsList from './components/JobsList';
 import PostView from './components/PostView';
 import Pagination from './components/Pagination';
-import FloatingActionButtons from './components/FloatingActionButtons';
 import PasswordModal from './components/PasswordModal';
 import AddEditPostModal from './components/AddEditPostModal';
 import AddEditJobModal from './components/AddEditJobModal';
@@ -214,14 +213,6 @@ const App: React.FC = () => {
 
     const selectedPost = useMemo(() => posts.find(p => p.id === selectedPostId), [posts, selectedPostId]);
     
-    const handleAddClick = () => {
-        if (activeTab === 'posts') {
-            requestPassword('add_post');
-        } else {
-            requestPassword('add_job');
-        }
-    }
-
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
@@ -370,12 +361,6 @@ const App: React.FC = () => {
             </main>
 
             <Footer />
-            
-            <FloatingActionButtons 
-                onAdminClick={() => requestPassword('admin')}
-                onAddClick={handleAddClick}
-                showAdmin={activeTab === 'posts'}
-            />
 
             <PasswordModal
                 isOpen={!!passwordModalAction}
