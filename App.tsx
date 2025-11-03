@@ -14,6 +14,7 @@ import FirstDegreeEquationInteractive from './components/FirstDegreeEquationInte
 import NotableProductsInteractive from './components/NotableProductsInteractive';
 import LinearSystemInteractive from './components/LinearSystemInteractive';
 import FactoringInteractive from './components/FactoringInteractive';
+import AffineFunctionInteractive from './components/AffineFunctionInteractive';
 import Pagination from './components/Pagination';
 import PasswordModal from './components/PasswordModal';
 import AddEditPostModal from './components/AddEditPostModal';
@@ -238,6 +239,8 @@ const App: React.FC = () => {
                 return <LinearSystemInteractive onBack={handleBackToList} />;
             case 7:
                 return <FactoringInteractive onBack={handleBackToList} />;
+            case 8:
+                return <AffineFunctionInteractive onBack={handleBackToList} />;
             default:
                 return <PostView post={selectedPost} onBack={handleBackToList} />;
         }
