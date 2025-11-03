@@ -10,6 +10,7 @@ import PostView from './components/PostView';
 import PythagorasInteractive from './components/PythagorasInteractive';
 import EulerInteractive from './components/EulerInteractive';
 import IntegralsInteractive from './components/IntegralsInteractive';
+import FirstDegreeEquationInteractive from './components/FirstDegreeEquationInteractive';
 import Pagination from './components/Pagination';
 import PasswordModal from './components/PasswordModal';
 import AddEditPostModal from './components/AddEditPostModal';
@@ -226,6 +227,8 @@ const App: React.FC = () => {
                 return <PythagorasInteractive onBack={handleBackToList} />;
             case 3:
                 return <IntegralsInteractive onBack={handleBackToList} />;
+            case 4:
+                return <FirstDegreeEquationInteractive onBack={handleBackToList} />;
             default:
                 return <PostView post={selectedPost} onBack={handleBackToList} />;
         }
