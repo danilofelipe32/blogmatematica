@@ -13,6 +13,7 @@ import IntegralsInteractive from './components/IntegralsInteractive';
 import FirstDegreeEquationInteractive from './components/FirstDegreeEquationInteractive';
 import NotableProductsInteractive from './components/NotableProductsInteractive';
 import LinearSystemInteractive from './components/LinearSystemInteractive';
+import FactoringInteractive from './components/FactoringInteractive';
 import Pagination from './components/Pagination';
 import PasswordModal from './components/PasswordModal';
 import AddEditPostModal from './components/AddEditPostModal';
@@ -235,6 +236,8 @@ const App: React.FC = () => {
                 return <NotableProductsInteractive onBack={handleBackToList} />;
             case 6:
                 return <LinearSystemInteractive onBack={handleBackToList} />;
+            case 7:
+                return <FactoringInteractive onBack={handleBackToList} />;
             default:
                 return <PostView post={selectedPost} onBack={handleBackToList} />;
         }
