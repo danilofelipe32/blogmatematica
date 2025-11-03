@@ -7,6 +7,9 @@ import Footer from './components/Footer';
 import PostCard from './components/PostCard';
 import JobsList from './components/JobsList';
 import PostView from './components/PostView';
+import PythagorasInteractive from './components/PythagorasInteractive';
+import EulerInteractive from './components/EulerInteractive';
+import IntegralsInteractive from './components/IntegralsInteractive';
 import Pagination from './components/Pagination';
 import PasswordModal from './components/PasswordModal';
 import AddEditPostModal from './components/AddEditPostModal';
@@ -212,6 +215,21 @@ const App: React.FC = () => {
     };
 
     const selectedPost = useMemo(() => posts.find(p => p.id === selectedPostId), [posts, selectedPostId]);
+
+    const renderSelectedPost = () => {
+        if (!selectedPost) return null;
+
+        switch (selectedPost.id) {
+            case 1:
+                return <EulerInteractive onBack={handleBackToList} />;
+            case 2:
+                return <PythagorasInteractive onBack={handleBackToList} />;
+            case 3:
+                return <IntegralsInteractive onBack={handleBackToList} />;
+            default:
+                return <PostView post={selectedPost} onBack={handleBackToList} />;
+        }
+    };
     
     return (
         <div className="flex flex-col min-h-screen">
@@ -219,7 +237,7 @@ const App: React.FC = () => {
 
             <main className="flex-grow container mx-auto p-4 sm:p-6 md:p-8">
                 {selectedPost ? (
-                    <PostView post={selectedPost} onBack={handleBackToList} />
+                    renderSelectedPost()
                 ) : (
                     <>
                         <div className="mb-8">
