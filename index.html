@@ -194,6 +194,100 @@
         .part-ab { background-color: #eab308; } /* yellow-500 */
         .part-b2 { background-color: #22c55e; } /* green-500 */
 
+        /* Styles for Linear System Interactive */
+        .linear-system-page h1, .linear-system-page h2, .linear-system-page h3 {
+            font-family: 'Merriweather', serif;
+        }
+        .linear-system-page .formula {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.5em;
+            background-color: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: #0f172a;
+            border: 1px solid #e2e8f0;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .linear-system-page .formula-sm {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.25em;
+            color: #0284c7;
+            background-color: #e0f2fe;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .linear-system-page .step-card {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .linear-system-page .step-card.active {
+            border-color: #0ea5e9;
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.1);
+        }
+        .linear-system-page .hidden-step {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, opacity 0.3s ease-out, transform 0.3s ease-out;
+            transform: translateY(-10px);
+        }
+        .linear-system-page .visible-step {
+            max-height: 500px;
+            opacity: 1;
+            transform: translateY(0);
+            margin-top: 20px;
+        }
+        .linear-system-page .btn-primary {
+            background-color: #0ea5e9;
+            color: white;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .linear-system-page .btn-primary:hover {
+            background-color: #0284c7;
+            box-shadow: 0 6px 10px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .linear-system-page .btn-primary:disabled {
+            background-color: #94a3b8;
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        .linear-system-page .chart-container {
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .linear-system-page .chart-container {
+                height: 400px;
+            }
+        }
+        #substitute-anim-clone {
+            position: absolute;
+            z-index: 100;
+            background-color: #e0f2fe;
+            color: #0284c7;
+            border: 1px dashed #0284c7;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.25em;
+            opacity: 0;
+            transition: all 0.6s ease-in-out;
+            pointer-events: none;
+        }
+
     </style>
 <script type="importmap">
 {
