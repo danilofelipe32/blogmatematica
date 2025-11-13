@@ -2,6 +2,8 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { Post, Job } from './types';
 import { INITIAL_POSTS, INITIAL_JOBS, CATEGORIES, POSTS_PER_PAGE } from './constants';
 import { useLocalStorage } from './hooks/useLocalStorage';
+import { generateRssFeedXml } from './utils/RssFeedGenerator';
+import { parsePortugueseDate } from './utils/dateParser';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import PostCard from './components/PostCard';
@@ -31,6 +33,8 @@ const App: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState('Todos');
     const [isFilterVisible, setIsFilterVisible] = useState(true);
     const [activeTab, setActiveTab] = useState<'posts' | 'jobs'>('posts');
+    const [startDate, setStartDate] = useState<string>('');
+    const [endDate, setEndDate] = useState<string>('');
 
     // Job States
     const [currentJobPage, setCurrentJobPage] = useState(1);
@@ -53,14 +57,26 @@ const App: React.FC = () => {
     const JOB_CATEGORIES = useMemo(() => ['Todos', ...Array.from(new Set(jobs.map(job => job.solutionType)))], [jobs]);
 
     const filteredPosts = useMemo(() => {
+        const startDateTime = startDate ? Date.parse(startDate + 'T00:00:00.000Z') : null;
+        const endDateTime = endDate ? Date.parse(endDate + 'T23:59:59.999Z') : null;
+
         return posts.filter(post => {
             const matchesCategory = activeCategory === 'Todos' || post.category === activeCategory;
             const matchesSearch = searchTerm === '' ||
                 post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-            return matchesCategory && matchesSearch;
+
+            const matchesDate = (() => {
+                if (!startDateTime && !endDateTime) return true;
+                const postDateTime = parsePortugueseDate(post.date).getTime();
+                if (startDateTime && postDateTime < startDateTime) return false;
+                if (endDateTime && postDateTime > endDateTime) return false;
+                return true;
+            })();
+
+            return matchesCategory && matchesSearch && matchesDate;
         });
-    }, [posts, activeCategory, searchTerm]);
+    }, [posts, activeCategory, searchTerm, startDate, endDate]);
 
     const paginatedPosts = useMemo(() => {
         const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
@@ -100,6 +116,22 @@ const App: React.FC = () => {
 
     const handleCategoryChange = (category: string) => {
         setActiveCategory(category);
+        setCurrentPage(1);
+    };
+
+    const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setStartDate(e.target.value);
+        setCurrentPage(1);
+    };
+
+    const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEndDate(e.target.value);
+        setCurrentPage(1);
+    };
+
+    const clearDateFilter = () => {
+        setStartDate('');
+        setEndDate('');
         setCurrentPage(1);
     };
     
@@ -218,6 +250,13 @@ const App: React.FC = () => {
         setIsDeleteJobConfirmModalOpen(false);
         setJobToDeleteId(null);
     };
+    
+    const handleRssClick = useCallback(() => {
+        const xmlString = generateRssFeedXml(posts);
+        const blob = new Blob([xmlString], { type: 'application/rss+xml; charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+    }, [posts]);
 
     const selectedPost = useMemo(() => posts.find(p => p.id === selectedPostId), [posts, selectedPostId]);
 
@@ -298,24 +337,58 @@ const App: React.FC = () => {
                                         </div>
                                     </div>
                                     
-                                    {/* Category Pills */}
                                     {isFilterVisible && (
-                                        <div className="flex flex-wrap justify-center gap-x-3 gap-y-2">
-                                            {CATEGORIES.map(category => (
-                                                <button
-                                                    key={category}
-                                                    onClick={() => handleCategoryChange(category)}
-                                                    className={`
-                                                        px-5 py-2 text-sm font-medium rounded-full transition-all duration-200 ease-in-out
-                                                        ${activeCategory === category
-                                                            ? 'bg-blue-600 text-white shadow-md'
-                                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800'}
-                                                    `}
-                                                >
-                                                    {category}
-                                                </button>
-                                            ))}
-                                        </div>
+                                        <>
+                                            <div className="flex flex-wrap justify-center gap-x-3 gap-y-2">
+                                                {CATEGORIES.map(category => (
+                                                    <button
+                                                        key={category}
+                                                        onClick={() => handleCategoryChange(category)}
+                                                        className={`
+                                                            px-5 py-2 text-sm font-medium rounded-full transition-all duration-200 ease-in-out
+                                                            ${activeCategory === category
+                                                                ? 'bg-blue-600 text-white shadow-md'
+                                                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800'}
+                                                        `}
+                                                    >
+                                                        {category}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                            <div className="mt-4 flex flex-wrap justify-center items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                                                <div className="flex items-center gap-2">
+                                                    <label htmlFor="startDate" className="text-sm font-medium text-gray-600">De:</label>
+                                                    <input
+                                                        type="date"
+                                                        id="startDate"
+                                                        value={startDate}
+                                                        onChange={handleStartDateChange}
+                                                        className="px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                                        aria-label="Data de início"
+                                                    />
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <label htmlFor="endDate" className="text-sm font-medium text-gray-600">Até:</label>
+                                                    <input
+                                                        type="date"
+                                                        id="endDate"
+                                                        value={endDate}
+                                                        onChange={handleEndDateChange}
+                                                        className="px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                                        aria-label="Data de fim"
+                                                    />
+                                                </div>
+                                                {(startDate || endDate) && (
+                                                    <button
+                                                        onClick={clearDateFilter}
+                                                        className="px-3 py-1.5 text-sm bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
+                                                        aria-label="Limpar filtro de data"
+                                                    >
+                                                        Limpar
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </>
                                     )}
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -393,7 +466,7 @@ const App: React.FC = () => {
                 )}
             </main>
 
-            <Footer />
+            <Footer onRssClick={handleRssClick} />
 
             <PasswordModal
                 isOpen={!!passwordModalAction}
