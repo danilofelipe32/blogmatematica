@@ -11,7 +11,7 @@ const Footer: React.FC<FooterProps> = ({ onRssClick }) => {
              <div className="flex justify-center items-center space-x-4 mb-2">
                 <button 
                     onClick={onRssClick} 
-                    className="text-gray-500 hover:text-orange-600 transition-colors flex items-center space-x-2 group" 
+                    className="text-gray-500 hover:text-orange-600 transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 group" 
                     title="Assine nosso Feed RSS"
                     aria-label="Feed RSS"
                 >
